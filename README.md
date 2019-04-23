@@ -1,7 +1,7 @@
 <h1 align="center"><code>react-local-store</code></h1>
 <p align="center"><code>localStorage</code>-persisted context for your React apps, accessible through Hooks</p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=f0f"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-f0f.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-386%20B-f0f.svg?style=flat-square"> <sup>🤭 — <em>OMG, so tiny!</em></sup> 
+  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=f0f"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-f0f.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-560%20B-f0f.svg?style=flat-square"> <sup>🤭 — <em>OMG, so tiny!</em></sup> 
 </p>
 
 ## Reasons to not use this
@@ -32,7 +32,7 @@ function App() {
       <h1>{state.title}</h1>
       <input
         type="text"
-        value={state.title}
+        defaultValue={state.title}
         onChange={event =>
           dispatch({ type: 'UPDATE_TITLE', data: event.target.value })
         }
@@ -71,6 +71,7 @@ Once you're in there, give this a try:
 
 - Change the value in the field and see that the heading also updates.
 - Refresh the page and see that your state was persisted.
+- Open the app in another tab to see that its context is not only shared, but synchronised with the current tab.
 
 **Note**: By default your state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. If you want multiple stores, you'll need to name them:
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-const { createContext, useContext, useReducer, useState } = React;
+const { createContext, useContext, useEffect, useReducer, useState } = React;
 
 const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
 
@@ -20,13 +20,35 @@ interface IContext {
 interface ILocalStoreProvider {
   children: React.ReactElement;
   name?: string;
+  sync?: boolean;
   initialState?: IState;
   reducer: React.Reducer<IState, IAction>;
 }
 
+const rIC =
+  window['requestIdleCallback'] ||
+  function(handler: Function) {
+    const startTime = Date.now();
+
+    setTimeout(
+      () =>
+        handler({
+          didTimeout: false,
+          timeRemaining: () => Math.max(0, 50.0 - (Date.now() - startTime))
+        }),
+      1
+    );
+  };
+
 const LocalStoreContexts = {};
 
-export function LocalStoreProvider({ children, name = DEFAULT_NAME, initialState = {}, reducer }: ILocalStoreProvider) {
+export function LocalStoreProvider({
+  children,
+  name = DEFAULT_NAME,
+  sync = true,
+  initialState = {},
+  reducer
+}: ILocalStoreProvider) {
   const [value, setValue] = useState(() => {
     const _value = localStorage.getItem(name) || JSON.stringify(initialState);
 
@@ -46,6 +68,28 @@ export function LocalStoreProvider({ children, name = DEFAULT_NAME, initialState
   if (!LocalStoreContexts[name]) {
     LocalStoreContexts[name] = createContext({} as IContext);
   }
+
+  useEffect(() => {
+    if (sync) {
+      let hasEnded = false;
+
+      rIC(function poll() {
+        const _value = localStorage.getItem(name);
+
+        if (value !== _value) {
+          setValue(_value || JSON.stringify(initialState));
+        }
+
+        if (!hasEnded) {
+          rIC(poll);
+        }
+      });
+
+      return () => {
+        hasEnded = true;
+      };
+    }
+  }, [state]);
 
   const Provider = LocalStoreContexts[name].Provider;
 
