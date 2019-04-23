@@ -1,7 +1,7 @@
 <h1 align="center"><code>react-local-store</code></h1>
-<p align="center"><small><code>localStorage</code>-persisted context for your React apps, accessible through Hooks</small></p>
+<p align="center"><code>localStorage</code>-persisted context for your React apps, accessible through Hooks</p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=f0f"></a> <img alt="GZip size" src="https://img.shields.io/badge/gzip-386%20B-f0f.svg?style=flat-square"> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-f0f.svg?style=flat-square">
+  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=f0f"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-f0f.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-386%20B-f0f.svg?style=flat-square"> <sup>🤭 — <em>OMG, so tiny!</em></sup> 
 </p>
 
 ## Reasons to not use this
