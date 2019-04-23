@@ -78,4 +78,4 @@ Once you're in there, give this a try:
 - Set the a `name` prop on the provider:
   - `<LocalStoreProvider name="xyz" initialState={...} reducer={...} />`
 - Access it by passing the same name as an argument to the hook:
-  - `useLocalState('xyz')`
+  - `useLocalStore('xyz')`
