@@ -1,17 +1,18 @@
-<h1 align="center"><code>react-local-store</code></h1>
+<h1 align="center"><pre>react-local-store</pre></h1>
 <p align="center"><code>localStorage</code>-persisted context for your React apps, accessible through Hooks</p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=f0f"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-f0f.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-560%20B-f0f.svg?style=flat-square"> <sup>🤭 — <em>OMG, so tiny!</em></sup> 
+  <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=blue"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-blue.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-560%20B-blue.svg?style=flat-square">&nbsp;<sup>🤭&nbsp;—&nbsp;<em>OMG,&nbsp;so&nbsp;tiny!</em></sup> 
 </p>
 
 ## Reasons to not use this
 
-- You're using a pre-[Hooks](https://reactjs.org/docs/hooks-intro.html) version of React
+- You're using a pre-[Hooks](https://reactjs.org/docs/hooks-intro.html) version of React (`<16.8`)
 - You'll be using state that can't be serialised to JSON (i.e. functions)
+- You update state often in short time periods (`localStorage` is 😴)
 - You want to access state outside of functional components
-- You don't want to use a reducer to modify state
+- You don't want to use a [reducer](https://reactjs.org/docs/hooks-reference.html#usereducer) to modify state
 
-Alright, still with me? great.
+Alright, still with me? great…
 
 ## Getting started
 
