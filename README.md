@@ -21,7 +21,9 @@ function App() {
       <input
         type="text"
         value={state.title}
-        onChange={e => dispatch({ type: 'title', data: e.target.value })}
+        onChange={event =>
+          dispatch({ type: 'title', data: event.target.value })
+        }
       />
     </div>
   );
@@ -46,3 +48,13 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+<!-- Remix Button -->
+<a href="https://glitch.com/edit/#!/remix/react-local-store-getting-started">
+  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
+</a>
+
+- Change the value in the field, and see that the heading also updates.
+- Now, refresh the page and see that your state was persisted.
+
+Note: By default yor state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. To change this (and have multiple stores, set the a `name` prop on `<LocalStoreProvider>`, and retrieve it my passing the same name as an argument to `useLocalStore`.

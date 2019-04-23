@@ -1,7 +1,7 @@
 import * as React from 'react';
 const { createContext, useContext, useReducer, useState } = React;
 
-const DEFAULT_KEY = '__REACT_LOCAL_STORE__';
+const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
 
 export interface IAction {
   type: string;
@@ -19,18 +19,18 @@ interface IContext {
 
 interface ILocalStoreProvider {
   children: React.ReactElement;
-  key?: string;
+  name?: string;
   initialState?: IState;
   reducer: React.Reducer<IState, IAction>;
 }
 
-const LocalStoreContext = createContext({} as IContext);
+const LocalStoreContexts = {};
 
-export function LocalStoreProvider({ children, key = DEFAULT_KEY, initialState = {}, reducer }: ILocalStoreProvider) {
+export function LocalStoreProvider({ children, name = DEFAULT_NAME, initialState = {}, reducer }: ILocalStoreProvider) {
   const [value, setValue] = useState(() => {
-    const _value = localStorage.getItem(key) || JSON.stringify(initialState);
+    const _value = localStorage.getItem(name) || JSON.stringify(initialState);
 
-    localStorage.setItem(key, _value);
+    localStorage.setItem(name, _value);
 
     return _value;
   });
@@ -39,17 +39,19 @@ export function LocalStoreProvider({ children, key = DEFAULT_KEY, initialState =
     const nextState = reducer(state, action);
     const nextValue = JSON.stringify(nextState);
 
-    localStorage.setItem(key, nextValue);
+    localStorage.setItem(name, nextValue);
     setValue(nextValue);
   }, state);
 
-  return (
-    <LocalStoreContext.Provider value={{ state, dispatch }}>{React.Children.only(children)}</LocalStoreContext.Provider>
-  );
+  if (!LocalStoreContexts[name]) {
+    LocalStoreContexts[name] = createContext({} as IContext);
+  }
+
+  const Provider = LocalStoreContexts[name].Provider;
+
+  return <Provider value={{ state, dispatch }}>{React.Children.only(children)}</Provider>;
 }
 
-export const LocalStoreConsumer = LocalStoreContext.Consumer;
-
-export function useLocalStore(): IContext {
-  return useContext(LocalStoreContext);
+export function useLocalStore(name = DEFAULT_NAME): IContext {
+  return useContext(LocalStoreContexts[name]);
 }
