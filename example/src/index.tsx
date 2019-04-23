@@ -11,7 +11,9 @@ function App() {
       <input
         type="text"
         value={state.title}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => dispatch({ type: 'title', data: event.target.value })}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch({ type: 'UPDATE_TITLE', data: event.target.value })
+        }
       />
     </div>
   );
@@ -27,7 +29,7 @@ const initialState = {
 
 const reducer = (state: IAppState, action: IAction): IAppState => {
   switch (action.type) {
-    case 'title':
+    case 'UPDATE_TITLE':
       return { ...state, title: action.data } as IAppState;
     default:
       return state;
