@@ -1,0 +1,56 @@
+{
+  "name": "react-local-store",
+  "version": "1.0.0-pre",
+  "description": "localStorage-persisted context for your React apps, with a reducer-style Hook interface",
+  "keywords": [
+    "react",
+    "hooks",
+    "localstorage",
+    "state",
+    "reducer",
+    "context"
+  ],
+  "license": "Unlicense",
+  "contributors": [
+    "Colin Gourlay <colin@colin-gourlay.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colingourlay/react-local-store.git"
+  },
+  "main": "dist/react-local-store.js",
+  "module": "dist/react-local-store.m.js",
+  "types": "dist/react-local-store.d.ts",
+  "source": "src/react-local-store.tsx",
+  "files": [
+    "dist"
+  ],
+  "git": {
+    "tagName": "${version}"
+  },
+  "github": {
+    "release": true
+  },
+  "scripts": {
+    "start": "concurrently -k \"npm:example:*\"",
+    "example:serve": "http-server example --silent",
+    "example:watch": "microbundle watch --no-compress --entry example/src/index.tsx --globals react=React,react-dom=ReactDOM --format umd --jsx React.createElement --output example/dist/bundle.js",
+    "clean": "rimraf dist",
+    "watch": "npm run clean && microbundle watch --no-compress --format cjs,es",
+    "build": "npm run clean && microbundle --format cjs,es --sourcemap=false",
+    "prepare": "npm run build",
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.14",
+    "concurrently": "^4.1.0",
+    "http-server": "^0.11.1",
+    "microbundle": "^0.11.0",
+    "react": "^16.8.4",
+    "release-it": "^10.3.1",
+    "rimraf": "^2.6.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.4"
+  }
+}
