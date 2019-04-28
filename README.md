@@ -35,7 +35,7 @@ function App() {
         type="text"
         defaultValue={state.title}
         onChange={event =>
-          dispatch({ type: 'UPDATE_TITLE', data: event.target.value })
+          dispatch({ type: 'UPDATE_TITLE', payload: event.target.value })
         }
       />
     </div>
@@ -50,7 +50,7 @@ ReactDOM.render(
     reducer={(state, action) => {
       switch (action.type) {
         case 'UPDATE_TITLE':
-          return { ...state, title: action.data };
+          return { ...state, title: action.payload };
         default:
           return state;
       }
