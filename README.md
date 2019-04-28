@@ -10,7 +10,7 @@
 - You'll be using state that can't be serialised to JSON (i.e. functions)
 - You update state often in short time periods (`localStorage` is 😴)
 - You want to access state outside of functional components
-- You don't want to use a [reducer](https://reactjs.org/docs/hooks-reference.html#usereducer) to modify state
+- You don't want to use a [reducer](https://reactjs.org/docs/hooks-reference.html#usereducer) to modify state (check out [context-storage](https://github.com/leonardodino/context-storage) instead)
 
 Alright, still with me? great…
 
