@@ -12,7 +12,7 @@ function App() {
         type="text"
         value={state.title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          dispatch({ type: 'UPDATE_TITLE', data: event.target.value })
+          dispatch({ type: 'UPDATE_TITLE', payload: event.target.value })
         }
       />
     </div>
@@ -30,7 +30,7 @@ const initialState = {
 const reducer = (state: IAppState, action: IAction): IAppState => {
   switch (action.type) {
     case 'UPDATE_TITLE':
-      return { ...state, title: action.data } as IAppState;
+      return { ...state, title: action.payload } as IAppState;
     default:
       return state;
   }

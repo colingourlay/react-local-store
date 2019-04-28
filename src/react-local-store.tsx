@@ -5,7 +5,9 @@ const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
 
 export interface IAction {
   type: string;
-  data?: any;
+  payload?: any;
+  error?: boolean;
+  meta?: object;
 }
 
 export interface IState {
