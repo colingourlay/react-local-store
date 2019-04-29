@@ -149,6 +149,10 @@ ReactDOM.render(
 );
 ```
 
+<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-custom-names">
+  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
+</a></p>
+
 The (arguably better) alternative is to use the `createLocalStore` factory...
 
 ### `createLocalStore(props)`
@@ -204,5 +208,9 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-create">
+  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
+</a></p>
 
 Any props you omit when creating your custom store will be expected when you use it. For example, you can create a custom store, only specifying the `name`, and still supply your own `initialState`, `reducer` and (optionally) `sync` props when creating Provider instances.
