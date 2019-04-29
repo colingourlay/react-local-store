@@ -107,7 +107,7 @@ export function createLocalStore(
   presetProps: ILocalStoreProvider | { name?: string } = {}
 ): [(props: ILocalStoreProvider) => JSX.Element, () => IContext] {
   const PresetLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} {...presetProps} />;
-  const useePresetLocalStore = () => useLocalStore(presetProps.name);
+  const usePresetLocalStore = () => useLocalStore(presetProps.name);
 
-  return [PresetLocalStoreProvider, useePresetLocalStore];
+  return [PresetLocalStoreProvider, usePresetLocalStore];
 }
