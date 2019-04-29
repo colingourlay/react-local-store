@@ -1,5 +1,5 @@
 import * as React from 'react';
-const { createContext, useContext, useEffect, useReducer, useState } = React;
+const { createContext, useContext, useEffect, useState } = React;
 
 const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
 const DEFAULT_REDUCER = (state: {}) => ({ ...state });
@@ -15,10 +15,7 @@ export interface IState {
   [prop: string]: any;
 }
 
-export interface IContext {
-  state: any;
-  dispatch: React.Dispatch<IAction>;
-}
+export type Context = [any, React.Dispatch<IAction>];
 
 export interface ILocalStoreProvider {
   children?: React.ReactElement;
@@ -60,16 +57,16 @@ export function LocalStoreProvider({
     return _value;
   });
   const state = JSON.parse(value);
-  const [, dispatch] = useReducer((state, action) => {
+  const dispatch = (action: IAction) => {
     const nextState = reducer(state, action);
     const nextValue = JSON.stringify(nextState);
 
     localStorage.setItem(name, nextValue);
     setValue(nextValue);
-  }, state);
+  };
 
   if (!LocalStoreContexts[name]) {
-    LocalStoreContexts[name] = createContext({} as IContext);
+    LocalStoreContexts[name] = createContext(undefined);
   }
 
   useEffect(() => {
@@ -96,16 +93,16 @@ export function LocalStoreProvider({
 
   const Provider = LocalStoreContexts[name].Provider;
 
-  return <Provider value={{ state, dispatch }}>{React.Children.only(children)}</Provider>;
+  return <Provider value={[state, dispatch]}>{React.Children.only(children)}</Provider>;
 }
 
-export function useLocalStore(name?: string): IContext {
+export function useLocalStore(name?: string): Context {
   return useContext(LocalStoreContexts[name || DEFAULT_NAME]);
 }
 
 export function createLocalStore(
   presetProps: ILocalStoreProvider | { name?: string } = {}
-): [(props: ILocalStoreProvider) => JSX.Element, () => IContext] {
+): [(props: ILocalStoreProvider) => JSX.Element, () => Context] {
   const PresetLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} {...presetProps} />;
   const usePresetLocalStore = () => useLocalStore(presetProps.name);
 

@@ -26,7 +26,7 @@ import ReactDOM from 'react-dom';
 import { LocalStoreProvider, useLocalStore } from 'react-local-store';
 
 function App() {
-  const { state, dispatch } = useLocalStore();
+  const [state, dispatch] = useLocalStore();
 
   return (
     <div>
@@ -97,7 +97,7 @@ function reducer(state, action) {
 }
 
 function App() {
-  const { state, dispatch } = useLocalStore();
+  const [state, dispatch] = useLocalStore();
 
   return (
     <button onClick={() => dispatch({ type: ACTION_TYPES.INCREMENT })}>
@@ -114,9 +114,13 @@ ReactDOM.render(
 );
 ```
 
+<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-basic">
+  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
+</a></p>
+
 #### Synced global state
 
-By default, global state change listeners are used (using `window.requestIdleCallback` or a simple polyfill) so that changes to your store is trigger a re-render in every app instance, including those in other browser tabs. If you want to disable the listener, set the `sync` prop to `false` in your Provider:
+By default, global state change listeners are used (using `window.requestIdleCallback` or a simple polyfill) so that changes to your store trigger a re-render in every app instance, including those in other browser tabs. If you want to disable the listener, set the `sync` prop to `false` in your Provider:
 
 ```jsx
 <LocalStoreProvider sync={false}>
@@ -126,13 +130,13 @@ By default, global state change listeners are used (using `window.requestIdleCal
 
 #### Custom store names
 
-By default your state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. If you want to have multiple stores (or use something other than the default), you'll need to name them with `LocalStoreProvider`'s `name` prop and `useLocalStore`'s optional argument:
+By default your state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. If you want to have multiple stores (or use something other than the default), you have a couple of options. The first is to name your stores with `LocalStoreProvider`'s `name` prop and `useLocalStore`'s optional argument:
 
 ```jsx
 /* ... */
 
 function App() {
-  const { state, dispatch } = useLocalStore('custom-store-name');
+  const [state, dispatch] = useLocalStore('custom-store-name');
 
   /* ... */
 }
@@ -144,6 +148,8 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+The (arguably better) alternative is to use the `createLocalStore` factory...
 
 ### `createLocalStore(props)`
 
@@ -182,7 +188,7 @@ import ReactDOM from 'react-dom';
 import { ACTION_TYPES, LocalStoreProvider, useLocalStore } from './store';
 
 function App() {
-  const { state, dispatch } = useLocalStore();
+  const [state, dispatch] = useLocalStore();
 
   return (
     <button onClick={() => dispatch({ type: ACTION_TYPES.INCREMENT })}>

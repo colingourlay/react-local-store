@@ -3,7 +3,7 @@ declare var ReactDOM;
 import { ACTION_TYPES, LocalStoreProvider, useLocalStore } from './store';
 
 function App() {
-  const { state, dispatch } = useLocalStore();
+  const [state, dispatch] = useLocalStore();
 
   return (
     <div>
