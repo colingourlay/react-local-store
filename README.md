@@ -74,9 +74,129 @@ Once you're in there, give this a try:
 - Refresh the page and see that your state was persisted.
 - Open the app in another tab to see that its context is not only shared, but synchronised with the current tab.
 
-**Note**: By default your state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. If you want multiple stores, you'll need to name them:
+## API
 
-- Set the a `name` prop on the provider:
-  - `<LocalStoreProvider name="xyz" initialState={...} reducer={...} />`
-- Access it by passing the same name as an argument to the hook:
-  - `useLocalStore('xyz')`
+### `<LocalStoreProvider />` and `useLocalStore()`
+
+Provide global state to your entire app, enabled React's context API, then access (and update) it using Hooks
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { LocalStoreProvider, useLocalStore } from 'react-local-store';
+
+const ACTION_TYPES = { INCREMENT: 'INCREMENT' };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTION_TYPES.INCREMENT:
+      return { ...state, count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+
+function App() {
+  const { state, dispatch } = useLocalStore();
+
+  return (
+    <button onClick={() => dispatch({ type: ACTION_TYPES.INCREMENT })}>
+      {state.count}
+    </button>
+  );
+}
+
+ReactDOM.render(
+  <LocalStoreProvider initialState={{ count: 0 }} reducer={reducer}>
+    <App />
+  </LocalStoreProvider>,
+  document.getElementById('root')
+);
+```
+
+#### Synced global state
+
+By default, global state change listeners are used (using `window.requestIdleCallback` or a simple polyfill) so that changes to your store is trigger a re-render in every app instance, including those in other browser tabs. If you want to disable the listener, set the `sync` prop to `false` in your Provider:
+
+```jsx
+<LocalStoreProvider sync={false}>
+  <App />
+</LocalStoreProvider>
+```
+
+#### Custom store names
+
+By default your state will be persisted to `localStorage` under the key: `__REACT_LOCAL_STORE__`. If you want to have multiple stores (or use something other than the default), you'll need to name them with `LocalStoreProvider`'s `name` prop and `useLocalStore`'s optional argument:
+
+```jsx
+/* ... */
+
+function App() {
+  const { state, dispatch } = useLocalStore('custom-store-name');
+
+  /* ... */
+}
+
+ReactDOM.render(
+  <LocalStoreProvider name="custom-store-name" initialState={...} reducer={...}>
+    <App />
+  </LocalStoreProvider>,
+  document.getElementById('root')
+);
+```
+
+### `createLocalStore(props)`
+
+Writing custom store names across various components in different files can start to get a bit tedious, and isn't very DRY, so you have the option of creating your own preset Providers and Hooks, with the `createLocalStore` factory.
+
+In `store.js`:
+
+```jsx
+import { createLocalStore } from 'react-local-store';
+
+const ACTION_TYPES = { INCREMENT: 'INCREMENT' };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTION_TYPES.INCREMENT:
+      return { ...state, count: state.count + 1 };
+    default:
+      return state;
+  }
+}
+
+const [LocalStoreProvider, useLocalStore] = createLocalStore({
+  name: 'custom-store-name',
+  initialState: { count: 0 },
+  reducer
+});
+
+export { ACTION_TYPES, LocalStoreProvider, useLocalStore };
+```
+
+In `index.js`:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ACTION_TYPES, LocalStoreProvider, useLocalStore } from './store';
+
+function App() {
+  const { state, dispatch } = useLocalStore();
+
+  return (
+    <button onClick={() => dispatch({ type: ACTION_TYPES.INCREMENT })}>
+      {state.count}
+    </button>
+  );
+}
+
+ReactDOM.render(
+  <LocalStoreProvider>
+    <App />
+  </LocalStoreProvider>,
+  document.getElementById('root')
+);
+```
+
+Any props you omit when creating your custom store will be expected when you use it. For example, you can create a custom store, only specifying the `name`, and still supply your own `initialState`, `reducer` and (optionally) `sync` props when creating Provider instances.
