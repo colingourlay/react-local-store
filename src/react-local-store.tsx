@@ -2,6 +2,7 @@ import * as React from 'react';
 const { createContext, useContext, useEffect, useReducer, useState } = React;
 
 const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
+const DEFAULT_REDUCER = (state: {}) => ({ ...state });
 
 export interface IAction {
   type: string;
@@ -14,17 +15,17 @@ export interface IState {
   [prop: string]: any;
 }
 
-interface IContext {
+export interface IContext {
   state: any;
   dispatch: React.Dispatch<IAction>;
 }
 
-interface ILocalStoreProvider {
-  children: React.ReactElement;
+export interface ILocalStoreProvider {
+  children?: React.ReactElement;
   name?: string;
   sync?: boolean;
   initialState?: IState;
-  reducer: React.Reducer<IState, IAction>;
+  reducer?: React.Reducer<IState, IAction>;
 }
 
 const rIC =
@@ -49,7 +50,7 @@ export function LocalStoreProvider({
   name = DEFAULT_NAME,
   sync = true,
   initialState = {},
-  reducer
+  reducer = DEFAULT_REDUCER
 }: ILocalStoreProvider): JSX.Element {
   const [value, setValue] = useState(() => {
     const _value = localStorage.getItem(name) || JSON.stringify(initialState);
@@ -102,10 +103,11 @@ export function useLocalStore(name?: string): IContext {
   return useContext(LocalStoreContexts[name || DEFAULT_NAME]);
 }
 
-// export function createNamedLocalStore(name: string): any[] {
-export function createNamedLocalStore(name: string): [(props: ILocalStoreProvider) => JSX.Element, () => IContext] {
-  const NamedLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} name={name} />;
-  const useNamedLocalStore = () => useLocalStore(name);
+export function createLocalStore(
+  presetProps: ILocalStoreProvider | { name?: string } = {}
+): [(props: ILocalStoreProvider) => JSX.Element, () => IContext] {
+  const PresetLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} {...presetProps} />;
+  const useePresetLocalStore = () => useLocalStore(presetProps.name);
 
-  return [NamedLocalStoreProvider, useNamedLocalStore];
+  return [PresetLocalStoreProvider, useePresetLocalStore];
 }
