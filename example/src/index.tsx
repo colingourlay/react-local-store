@@ -1,8 +1,6 @@
 declare var React;
 declare var ReactDOM;
-import { IAction, IState, createNamedLocalStore } from '../../src/react-local-store';
-
-const [LocalStoreProvider, useLocalStore] = createNamedLocalStore('example');
+import { ACTION_TYPES, LocalStoreProvider, useLocalStore } from './store';
 
 function App() {
   const { state, dispatch } = useLocalStore();
@@ -14,32 +12,15 @@ function App() {
         type="text"
         value={state.title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          dispatch({ type: 'UPDATE_TITLE', payload: event.target.value })
+          dispatch({ type: ACTION_TYPES.UPDATE_TITLE, payload: event.target.value })
         }
       />
     </div>
   );
 }
 
-interface IAppState extends IState {
-  title: string;
-}
-
-const initialState = {
-  title: 'react-local-store'
-} as IAppState;
-
-const reducer = (state: IAppState, action: IAction): IAppState => {
-  switch (action.type) {
-    case 'UPDATE_TITLE':
-      return { ...state, title: action.payload } as IAppState;
-    default:
-      return state;
-  }
-};
-
 ReactDOM.render(
-  <LocalStoreProvider initialState={initialState} reducer={reducer}>
+  <LocalStoreProvider>
     <App />
   </LocalStoreProvider>,
   document.getElementById('app')
