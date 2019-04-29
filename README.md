@@ -4,15 +4,14 @@
   <a href="https://www.npmjs.com/package/react-local-store"><img alt="NPM latest published version" src="https://img.shields.io/npm/v/react-local-store.svg?style=flat-square&color=blue"></a> <img alt="Formats: CommonJS, ECMAScript Modules" src="https://img.shields.io/badge/formats-cjs%2C%20esm-blue.svg?style=flat-square"> <img alt="GZip size" src="https://img.shields.io/badge/gzip-1%20kB-blue.svg?style=flat-square">&nbsp;<sup>🤭&nbsp;—&nbsp;<em>OMG,&nbsp;so&nbsp;tiny!</em></sup> 
 </p>
 
-## Reasons to not use this
+## Table of contents
 
-- You're using a pre-[Hooks](https://reactjs.org/docs/hooks-intro.html) version of React (`<16.8`)
-- You'll be using state that can't be serialised to JSON (i.e. functions)
-- You update state often in short time periods (`localStorage` is 😴)
-- You want to access state outside of functional components
-- You don't want to use a [reducer](https://reactjs.org/docs/hooks-reference.html#usereducer) to modify state (check out [context-storage](https://github.com/leonardodino/context-storage) instead)
-
-Alright, still with me? great…
+- [Getting started](#getting-started)
+- [API](#api)
+  - [`<LocalStoreProvider />` and `useLocalStore`](#localstoreprovider--and-uselocalstore)
+  - [`createLocalStore`](#createlocalstore)
+- [Reasons to not use this](#reasons-to-not-use-this)
+- [About the project](#about-the-project)
 
 ## Getting started
 
@@ -155,7 +154,7 @@ ReactDOM.render(
 
 The (arguably better) alternative is to use the `createLocalStore` factory...
 
-### `createLocalStore(props)`
+### `createLocalStore()`
 
 Writing custom store names across various components in different files can start to get a bit tedious, and isn't very DRY, so you have the option of creating your own preset Providers and Hooks, with the `createLocalStore` factory.
 
@@ -214,3 +213,19 @@ ReactDOM.render(
 </a></p>
 
 Any props you omit when creating your custom store will be expected when you use it. For example, you can create a custom store, only specifying the `name`, and still supply your own `initialState`, `reducer` and (optionally) `sync` props when creating Provider instances.
+
+## Reasons to not use this
+
+- You're using a pre-[Hooks](https://reactjs.org/docs/hooks-intro.html) version of React (`<16.8`)
+- You'll be using state that can't be serialised to JSON (i.e. functions)
+- You update state often in short time periods (`localStorage` is 😴)
+- You want to access state outside of functional components
+- You don't want to use a [reducer](https://reactjs.org/docs/hooks-reference.html#usereducer) to modify state (check out [context-storage](https://github.com/leonardodino/context-storage) instead)
+
+## About the project
+
+- `react-local-store` is currently maintained by [Colin Gourlay](https://colin-gourlay.com)
+- It is currently licensed under [The Unlicense](LICENSE)
+- If you'd like to help out, please submit ideas & bugs to the project's [issue tracker](https://github.com/colingourlay/react-local-store/issues)
+- To contribute code and documentation, please see the [contribution guide](CONTRIBUTING.md)
+- All contributions and project activity are subject to the project's [code of conduct](CODE_OF_CONDUCT.md)
