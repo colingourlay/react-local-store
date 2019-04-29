@@ -1,6 +1,8 @@
 declare var React;
 declare var ReactDOM;
-import { useLocalStore, LocalStoreProvider, IAction, IState } from '../../src/react-local-store';
+import { IAction, IState, createNamedLocalStore } from '../../src/react-local-store';
+
+const [LocalStoreProvider, useLocalStore] = createNamedLocalStore('example');
 
 function App() {
   const { state, dispatch } = useLocalStore();

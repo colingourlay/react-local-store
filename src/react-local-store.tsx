@@ -50,7 +50,7 @@ export function LocalStoreProvider({
   sync = true,
   initialState = {},
   reducer
-}: ILocalStoreProvider) {
+}: ILocalStoreProvider): JSX.Element {
   const [value, setValue] = useState(() => {
     const _value = localStorage.getItem(name) || JSON.stringify(initialState);
 
@@ -98,6 +98,14 @@ export function LocalStoreProvider({
   return <Provider value={{ state, dispatch }}>{React.Children.only(children)}</Provider>;
 }
 
-export function useLocalStore(name = DEFAULT_NAME): IContext {
-  return useContext(LocalStoreContexts[name]);
+export function useLocalStore(name?: string): IContext {
+  return useContext(LocalStoreContexts[name || DEFAULT_NAME]);
+}
+
+// export function createNamedLocalStore(name: string): any[] {
+export function createNamedLocalStore(name: string): [(props: ILocalStoreProvider) => JSX.Element, () => IContext] {
+  const NamedLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} name={name} />;
+  const useNamedLocalStore = () => useLocalStore(name);
+
+  return [NamedLocalStoreProvider, useNamedLocalStore];
 }
