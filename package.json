@@ -1,6 +1,6 @@
 {
   "name": "react-local-store",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "localStorage-persisted context for your React apps, accessible through Hooks",
   "keywords": [
     "react",
