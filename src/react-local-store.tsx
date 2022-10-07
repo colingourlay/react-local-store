@@ -1,29 +1,27 @@
+import type { Dispatch, ReactElement, Reducer } from 'react';
 import * as React from 'react';
-const { createContext, useContext, useEffect, useState } = React;
-
-const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
-const DEFAULT_REDUCER = (state: {}) => ({ ...state });
+const { Children, createContext, useContext, useEffect, useState } = React;
 
 export interface IAction {
   type: string;
-  payload?: any;
+  payload?: unknown;
   error?: boolean;
   meta?: object;
 }
 
-export interface IState {
-  [prop: string]: any;
-}
+export type LocalStoreReducer<S> = Reducer<S, IAction>
 
-export type Context = [any, React.Dispatch<IAction>];
+export type LocalStoreContext<S> = [S, Dispatch<IAction>];
 
-export interface ILocalStoreProvider {
-  children?: React.ReactElement;
+export interface ILocalStoreProvider<S> {
+  children?: ReactElement;
   name?: string;
   sync?: boolean;
-  initialState?: IState;
-  reducer?: React.Reducer<IState, IAction>;
+  initialState?: S;
+  reducer?: LocalStoreReducer<S>;
 }
+
+const DEFAULT_NAME = '__REACT_LOCAL_STORE__';
 
 const rIC =
   window['requestIdleCallback'] ||
@@ -42,13 +40,13 @@ const rIC =
 
 const LocalStoreContexts = {};
 
-export function LocalStoreProvider({
+export function LocalStoreProvider<S extends object>({
   children,
   name = DEFAULT_NAME,
   sync = true,
-  initialState = {},
-  reducer = DEFAULT_REDUCER
-}: ILocalStoreProvider): JSX.Element {
+  initialState = {} as S,
+  reducer
+}: ILocalStoreProvider<S>): JSX.Element {
   const [value, setValue] = useState(() => {
     const _value = localStorage.getItem(name) || JSON.stringify(initialState);
 
@@ -56,9 +54,9 @@ export function LocalStoreProvider({
 
     return _value;
   });
-  const state = JSON.parse(value);
+  const state = JSON.parse(value) as S;
   const dispatch = (action: IAction) => {
-    const nextState = reducer(state, action);
+    const nextState = reducer ? reducer(state, action) : { ...state };
     const nextValue = JSON.stringify(nextState);
 
     localStorage.setItem(name, nextValue);
@@ -66,7 +64,7 @@ export function LocalStoreProvider({
   };
 
   if (!LocalStoreContexts[name]) {
-    LocalStoreContexts[name] = createContext(undefined);
+    LocalStoreContexts[name] = createContext<S>(initialState);
   }
 
   useEffect(() => {
@@ -93,18 +91,18 @@ export function LocalStoreProvider({
 
   const Provider = LocalStoreContexts[name].Provider;
 
-  return <Provider value={[state, dispatch]}>{React.Children.only(children)}</Provider>;
+  return <Provider value={[state, dispatch]}>{Children.only(children)}</Provider>;
 }
 
-export function useLocalStore(name?: string): Context {
+export function useLocalStore<S>(name?: string): LocalStoreContext<S> {
   return useContext(LocalStoreContexts[name || DEFAULT_NAME]);
 }
 
-export function createLocalStore(
-  presetProps: ILocalStoreProvider | { name?: string } = {}
-): [(props: ILocalStoreProvider) => JSX.Element, () => Context] {
-  const PresetLocalStoreProvider = (props: ILocalStoreProvider) => <LocalStoreProvider {...props} {...presetProps} />;
-  const usePresetLocalStore = () => useLocalStore(presetProps.name);
+export function createLocalStore<S extends object>(
+  presetProps: ILocalStoreProvider<S> = {}
+): [(props: ILocalStoreProvider<S>) => JSX.Element, () => LocalStoreContext<S>] {
+  const PresetLocalStoreProvider = (props: ILocalStoreProvider<S>) => <LocalStoreProvider {...props} {...presetProps} />;
+  const usePresetLocalStore = () => useLocalStore<S>(presetProps.name);
 
   return [PresetLocalStoreProvider, usePresetLocalStore];
 }

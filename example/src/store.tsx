@@ -1,24 +1,23 @@
-import { IAction, IState, createLocalStore } from '../../src/react-local-store';
+import { createLocalStore } from '../../src/react-local-store';
 
 const ACTION_TYPES = { UPDATE_TITLE: 'UPDATE_TITLE' };
 
-interface IAppState extends IState {
+export interface AppState {
   title: string;
 }
 
-const initialState = {
-  title: 'react-local-store'
-} as IAppState;
-
-const reducer = (state: IAppState, action: IAction): IAppState => {
-  switch (action.type) {
-    case ACTION_TYPES.UPDATE_TITLE:
-      return { ...state, title: action.payload } as IAppState;
-    default:
-      return state;
+const [LocalStoreProvider, useLocalStore] = createLocalStore<AppState>({
+  initialState: {
+    title: 'react-local-store'
+  },
+  reducer: (prevState, action) => {
+    switch (action.type) {
+      case ACTION_TYPES.UPDATE_TITLE:
+        return { ...prevState, title: action.payload as string };
+      default:
+        return { ...prevState };
+    }
   }
-};
-
-const [LocalStoreProvider, useLocalStore] = createLocalStore({ initialState, reducer });
+});
 
 export { ACTION_TYPES, LocalStoreProvider, useLocalStore };

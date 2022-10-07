@@ -1,5 +1,5 @@
-declare var React;
-declare var ReactDOM;
+declare const React;
+declare const ReactDOM;
 import { ACTION_TYPES, LocalStoreProvider, useLocalStore } from './store';
 
 function App() {
@@ -19,9 +19,8 @@ function App() {
   );
 }
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('app') as HTMLDivElement).render(
   <LocalStoreProvider>
     <App />
-  </LocalStoreProvider>,
-  document.getElementById('app')
+  </LocalStoreProvider>
 );

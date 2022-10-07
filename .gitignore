@@ -3,7 +3,8 @@ node_modules
 
 # builds
 .rts2_cache_*
-dist
+/dist
+/example/dist/bundle*
 
 # misc
 .DS_Store

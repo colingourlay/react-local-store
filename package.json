@@ -32,24 +32,23 @@
   },
   "scripts": {
     "start": "concurrently -k \"npm:example:*\"",
-    "example:serve": "http-server example --silent",
+    "example:serve": "http-server example/dist --silent",
     "example:watch": "microbundle watch --no-compress --entry example/src/index.tsx --globals react=React,react-dom=ReactDOM --format umd --jsx React.createElement --output example/dist/bundle.js",
     "clean": "rimraf dist",
-    "watch": "npm run clean && microbundle watch --no-compress --format cjs,es",
-    "build": "npm run clean && microbundle --format cjs,es --sourcemap=false",
-    "prepare": "npm run build",
+    "watch": "npm run clean && microbundle watch --no-compress --jsx React.createElement  --format cjs,es",
+    "build": "npm run clean && microbundle --jsx React.createElement --format cjs,es --sourcemap=false",
+    "prepublishOnly": "npm run build",
     "release": "release-it"
   },
   "devDependencies": {
-    "@types/react": "^16.8.14",
-    "concurrently": "^4.1.0",
-    "http-server": "^0.11.1",
-    "microbundle": "^0.11.0",
-    "react": "^16.8.4",
-    "release-it": "^10.3.1",
-    "rimraf": "^2.6.3"
+    "@types/react": "^18.0.21",
+    "concurrently": "^7.4.0",
+    "http-server": "^14.1.1",
+    "microbundle": "^0.15.1",
+    "release-it": "^15.5.0",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
-    "react": "^16.8.4"
+    "react": ">=16"
   }
 }
