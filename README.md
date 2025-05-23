@@ -61,18 +61,6 @@ ReactDOM.render(
 );
 ```
 
-Want to take this code for a spin right now? Glitch has got you covered. Hit that button down below to fork the example above and have a play around:
-
-<p><a href="https://glitch.com/edit/#!/remix/react-local-store-getting-started">
-  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
-</a></p>
-
-Once you're in there, give this a try:
-
-- Change the value in the field and see that the heading also updates.
-- Refresh the page and see that your state was persisted.
-- Open the app in another tab to see that its context is not only shared, but synchronised with the current tab.
-
 ## API
 
 ### `<LocalStoreProvider />` and `useLocalStore()`
@@ -113,10 +101,6 @@ ReactDOM.render(
 );
 ```
 
-<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-basic">
-  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
-</a></p>
-
 #### Synced global state
 
 By default, global state change listeners are used (using `window.requestIdleCallback` or a simple polyfill) so that changes to your store trigger a re-render in every app instance, including those in other browser tabs. If you want to disable the listener, set the `sync` prop to `false` in your Provider:
@@ -147,10 +131,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
-
-<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-custom-names">
-  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
-</a></p>
 
 The (arguably better) alternative is to use the `createLocalStore` factory...
 
@@ -207,10 +187,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
-
-<p><a href="https://glitch.com/edit/#!/remix/react-local-store-api-create">
-  <img src="https://cdn.glitch.com/2bdfb3f8-05ef-4035-a06e-2043962a3a13%2Fremix%402x.png?1513093958726" alt="remix this" height="33">
-</a></p>
 
 Any props you omit when creating your custom store will be expected when you use it. For example, you can create a custom store, only specifying the `name`, and still supply your own `initialState`, `reducer` and (optionally) `sync` props when creating Provider instances.
 
